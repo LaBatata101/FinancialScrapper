@@ -1,0 +1,38 @@
+services:
+    db:
+        image: postgres:15
+        environment:
+            POSTGRES_USER: scraper
+            POSTGRES_PASSWORD: scraperpw
+            POSTGRES_DB: scraperdb
+        volumes:
+            - pg_data:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+
+    rabbitmq:
+        image: rabbitmq:3-management
+        ports:
+            - "5672:5672" # broker
+            - "15672:15672" # UI
+
+    backend:
+        build: .
+        depends_on: [db, rabbitmq]
+        environment:
+            DATABASE_URL: postgresql+asyncpg://scraper:scraperpw@db:5432/scraperdb
+            RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672/
+            OPENAI_API_KEY: ${OPENAI_API_KEY}
+        ports:
+            - "8000:8000"
+    celery:
+        build: .
+        command: celery -A app.workers.tasks.celery worker --loglevel=info
+        depends_on: [db, rabbitmq]
+        environment:
+            DATABASE_URL: postgresql+asyncpg://scraper:scraperpw@db:5432/scraperdb
+            RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672/
+            OPENAI_API_KEY: ${OPENAI_API_KEY}
+
+volumes:
+    pg_data:

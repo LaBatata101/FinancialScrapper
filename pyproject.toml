@@ -1,0 +1,39 @@
+[project]
+name = "crawler"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "agno>=1.7.9",
+    "alembic>=1.16.4",
+    "asyncpg>=0.30.0",
+    "beautifulsoup4>=4.13.4",
+    "celery[librabbitmq]>=5.5.3",
+    "fake-useragent>=2.2.0",
+    "fastapi[standard]>=0.116.1",
+    "gevent>=25.5.1",
+    "httpx[http2]>=0.28.1",
+    "lxml>=5.4.0",
+    "openai>=1.99.9",
+    "parsel>=1.10.0",
+    "playwright>=1.54.0",
+    "psycopg2-binary>=2.9.10",
+    "pydantic>=2.11.7",
+    "pydoll-python>=2.6.0",
+    "python-dotenv>=1.1.1",
+    "sqlalchemy>=2.0.42",
+    "tiktoken>=0.11.0",
+]
+
+[tool.basedpyright]
+typeCheckingMode = "basic"
+
+[dependency-groups]
+dev = [
+    "aiosqlite>=0.21.0",
+    "pytest>=8.4.1",
+    "pytest-asyncio>=1.1.0",
+    "pytest-cov>=6.2.1",
+    "pytest-mock>=3.14.1",
+]
